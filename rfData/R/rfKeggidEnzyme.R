@@ -25,12 +25,12 @@ ebcStructure <- lapply(
 ebcResult <- NULL;
 for (x in ebcStructure) { ebcResult <- rbind(ebcResult, x) };
 ebcResult <- data.frame(ebcResult);
-names(ebcResult) <- c("idKegg", "idEnzyme");
+names(ebcResult) <- c("idKegg", "enzyme");
 
 # Write out
 write.table(
   ebcResult,
-  file = "./data/rfEnzymeKeggid.tsv",
+  file = "./data/rfKeggidEnzyme.tsv",
   sep = "\t",
   eol = "\n",
   quote = FALSE,
@@ -51,12 +51,12 @@ cbeStructure <- lapply(
 cbeResult <- NULL;
 for (x in cbeStructure) { cbeResult <- rbind(cbeResult, x) };
 cbeResult <- data.frame(cbeResult);
-names(cbeResult) <- c("idEnzyme", "idKegg");
+names(cbeResult) <- c("enzyme", "idKegg");
 
 # Write out
 write.table(
   cbeResult,
-  file = "./data/rfKeggidEnzyme.tsv",
+  file = "./data/rfEnzymeKeggid.tsv",
   sep = "\t",
   eol = "\n",
   quote = FALSE,
