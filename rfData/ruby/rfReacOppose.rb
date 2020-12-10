@@ -11,7 +11,17 @@ data.delete_at(0);
 spl = data.map{|e| e[1].split(/>/)};
 
 # Split sides by space and get compound IDs only
-com = spl.map{|r| r.map{|e| e.split(/ /).select{|i| i.match?(/^C\d{5}$/) }}};
+com = spl.map{|r|
+  r.map{|e|
+    e.split(/ /).select{|i|
+      # Only grab strings that match
+      i.match?(/^C\d{5}/)
+    }.map{|s|
+      # but strip off the trailing bracketed section, if any
+      s.gsub(/(?<=\d)(\(.+)/, '')
+    }
+  }
+};
 
 # Open the file to write
 f = File.open('./data/rfReacOppose.tsv', 'w');
