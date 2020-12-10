@@ -14,7 +14,7 @@ spl = data.map{|e| e[1].split(/>/)};
 com = spl.map{|r| r.map{|e| e.split(/ /).select{|i| i.match?(/^C\d{5}$/) }}};
 
 # Open the file to write
-f = File.open('./data/rfReacEqn.tsv', 'w');
+f = File.open('./data/rfReacOppose.tsv', 'w');
 
 # Initialise output contents
 f.write("idReaction\tlhs\trhs\n");
