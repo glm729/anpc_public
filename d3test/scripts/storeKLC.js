@@ -23,9 +23,9 @@ function storeKLC(text) {
     // Show the error
     console.error("Error processing KLC!\n" + e.stack);
     // Flag the error
-    aaghk = true;
+    flag = true;
   } finally {
     // Has an error occurred?
-    return aaghk ? false : true;
+    return flag ? false : true;
   };
 }
