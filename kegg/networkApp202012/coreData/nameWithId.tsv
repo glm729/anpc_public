@@ -1,0 +1,220 @@
+name	idKegg	idOther
+1-methyl-4-imidazoleacetate	C05828	
+1-methyladenosine	C02494	
+1-methylhistidine	C01152	
+1-methylxanthine	C16358	
+1,5-anhydroglucitol	C07326	
+1,7-dimethylurate	C16356	
+2-hydroxyadipate	C02360	
+2-hydroxybutyrate	C05984	
+2-hydroxyglutarate	C02630	
+2-hydroxyisobutyrate	C21297	
+2-isopropylmalate	C02504	
+2-methylcitrate	C02225	
+2'-deoxyuridine	C00526	
+3-aminoisobutyrate	C03284	
+3-hydroxy-3-methylglutarate	C03761	
+3-hydroxyisobutyrate	C01188	
+3-methyl-2-oxobutyrate	C00141	
+3-methylhistidine	C01152	
+3-methylxanthine	C16357	
+3-phenylpropionate	C05629	
+3-ureidopropionate	C02642	
+3beta-hydroxy-5-cholestenoate	C17333	
+3beta,7alpha-dihydroxy-5-cholestenoate	C17335	
+4-acetamidobutanoate	C02946	
+4-chlorobenzoate	C02370	
+4-hydroxyphenylacetate	C00642	
+4-imidazoleacetate	C02835	
+4-methyl-2-oxopentanoate	C00233	
+5-acetylamino-6-amino-3-methyluracil	C16366	
+5-hete	C04805	
+5-hydroxyindoleacetate	C05635	
+5-methylthioadenosine	C00170	
+5-oxoproline	C01879	
+5,6-dihydrothymine	C00906	
+5,6-dihydrouracil	C00429	
+7-methylxanthine	C16353	
+8-methoxykynurenate	C05830	
+adenosine	C00212	
+adipate	C06104	
+adma	C03626	
+alanine	C01401	C00041
+alanine	C01401	C00133
+alpha-ketoglutaramate	C00940	
+alpha-ketoglutarate	C00026	
+alpha-tocopherol	C02477	
+androstenediol	C04295	
+androsterone glucuronide	C11135	
+anthranilate	C00108	
+arabitol	C00532	C01904
+arachidate	C06425	
+arachidonate	C00219	
+arginine	C02385	C00062
+arginine	C02385	C00792
+argininosuccinate	C03406	
+asparagine	C00152	
+benzoate	C00180	
+beta-alanine	C00099	
+beta-citrylglutamate	C20775	
+beta-cryptoxanthin	C08591	
+beta-tocopherol	C14152	
+betaine	C00719	
+bilirubin	C00486	
+biliverdin	C00500	
+butyrate	C00246	
+caffeine	C07481	
+caprylate	C06423	
+carnitine	C00487	C00318
+carnitine	C00487	C15025
+ceramide	C00195	
+cholesterol	C00187	
+cholesterol sulfate	C18043	
+choline	C00114	
+citrate	C00158	
+citrulline	C00327	
+creatine	C00300	
+creatinine	C00791	
+cystathionine	C00542	C02291
+cysteine	C00736	C00097
+cysteine	C00736	C00793
+cystine	C01420	C00491
+cytidine	C00475	
+cytosine	C00380	
+desmosterol	C01802	
+dihydroorotate	C00337	
+dimethyl sulfone	C11142	
+dimethylglycine	C01026	
+docosahexaenoate	C06429	
+docosapentaenoate	C16513	
+eicosapentaenoate	C06428	
+erythritol	C00503	
+erythronate	C21593	
+estrone 3-sulfate	C02538	
+ferritin	C19608	
+fructose	C02336	C01719
+fructose	C02336	C00095
+fructose	C02336	C10906
+fumarate	C00122	
+gamma-tocopherol	C02483	
+glucose	C00031	
+glucuronate	C00191	
+glutamate	C00025	C00302
+glutamate	C00025	C00217
+glutamine	C00064	C00819
+glutarate	C00489	
+glycerate	C00258	
+glycerol	C00116	
+glycerophosphoethanolamine	C01233	
+glycerophosphoserine	C22237	
+glycine	C00037	
+glycodeoxycholate	C05464	
+guanidinoacetate	C00581	
+guanosine	C00387	
+gulonate	C00800	
+hexadecanedioate	C19615	
+hippurate	C01586	
+histidine	C00135	C06419
+homoarginine	C01924	
+homocitrate	C01251	
+homocysteine	C00155	C05330
+hydantoin-5-propionate	C05565	
+hydroxyproline	C01157	
+hypotaurine	C00519	
+imidazole lactate	C05568	
+indoleacetate	C00954	
+inosine	C00294	
+isobutyrate	C02632	
+isocaproate	C21399	
+isoleucine	C00407	
+kynurenate	C01717	
+kynurenine	C00328	
+lactate	C01432	C00186
+lactate	C01432	C00256
+lanosterol	C01724	
+lathosterol	C01189	
+leucine	C00123	
+leukotriene b4	C02165	
+light	C00205	
+lte4	C05952	
+lysine	C00047	C00739
+lyxonate	C05412	
+malate	C00149	C00497
+maleate	C01384	
+maltose	C00208	
+mannonate	C00514	
+mannose	C00159	
+methionine	C00073	C00855
+myo-inositol	C00137	
+myoglobin	C05782	
+n-acetylhistamine	C05135	
+n-acetylneuraminate	C00270	
+n-acetylputrescine	C02714	
+n-formylkynurenine	C02700	
+n-formylmethionine	C03145	
+n1-methyl-2-pyridone-5-carboxamide	C05842	
+nicotinamide	C00153	
+oleate	C00712	
+ornithine	C01602	C00077
+ornithine	C01602	C00515
+orotate	C00295	
+palmitate	C00249	
+palmitoleate	C08362	
+paraxanthine	C13747	
+phenol sulfate	C00850	
+phenylalanine	C00079	C02265
+phenyllactate	C05607	
+phenylpyruvate	C00166	
+phosphocreatine	C02305	
+phytanate	C01607	
+pimelate	C02656	
+pipecolate	C00408	
+proline	C00148	C00763
+pseudouridine	C02067	
+pyruvate	C00022	
+quinate	C00296	
+quinolinate	C03722	
+retinol	C00473	
+ribitol	C00474	
+ribonate	C01685	
+ribose	C00121	
+sarcosine	C00213	
+sedoheptulose	C02076	
+serine	C00065	C00716
+serine	C00065	C00740
+serotonin	C00780	
+spermidine	C00315	
+sphinganine	C00836	
+sphingomyelin	C00550	
+sphingosine	C00319	
+sphingosine 1-phosphate	C06124	
+stachydrine	C10172	
+stearate	C01530	
+succinate	C00042	
+sucrose	C00089	
+sulfate	C00059	
+tartronate	C02287	
+taurine	C00245	
+taurocholate	C05122	
+taurodeoxycholate	C05463	
+theanine	C01047	
+theobromine	C07480	
+theophylline	C07130	
+threonate	C01620	C21649
+threonine	C00188	C00820
+thyroxine	C01829	
+trigonelline	C01004	
+trimethylamine n-oxide	C01104	
+tryptophan	C00078	C00806
+tryptophan	C00078	C00525
+tyrosine	C00082	
+uracil	C00106	
+urate	C00366	
+urea	C00086	
+uridine	C00299	
+valine	C00183	
+vanillylmandelate	C05584	
+xanthine	C00385	
+xanthosine	C01762	
+xylitol	C00379	
+xylonate	C05411	C00502
