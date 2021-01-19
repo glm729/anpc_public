@@ -4,9 +4,6 @@
  * have already been seen, to avoid defining multiple of the same node.
  * Replaces IDs with the names of the compounds.
  *
- * TODO:  Check why some compounds still feature IDs, and do not appear to
- *        feature a name (=> if statements in withId.map not working).
- *
  * @param {Array} withId Data from the literature with ID(s) in KEGG Compound.
  * @param {Array} oppose Array of objects of opposing compounds, based on the
  * KEGG Reaction equations.
@@ -32,5 +29,27 @@ function prepareVisData(withId, oppose) {
     // Push the opposing compounds to the links
     result.links.push({"source": o.lhs, "target": o.rhs});
   });
+  // Map over the data with ID
+  withId.map(w => {
+    // Initialise colour flag
+    let col = null;
+    // Get the unique regulation entries
+    let regSet = [...new Set(w.regulation)];
+    // If there's more than one unique entry, mark a conflict with cyan
+    col = regSet.length > 1 ? "cyan" : null;
+    // If no conflict
+    if (col === null) {
+      // If increased, mark green
+      if (regSet[0] === "increased") col = "green";
+      // If decreased, mark red
+      if (regSet[0] === "decreased") col = "red";
+      // If regulation is unique, and isn't increased or decreased, mark cyan
+      if (col === null) col = "cyan";
+      // TODO:  Refactor to allow for differences in regulation naming.
+    };
+    // For the node(s) for the current name, assign the colour
+    result.nodes.filter(r => r.name === w.name).map(r => r.colour = col);
+  });
+  // NOTE:  Is there a way to refactor this as one major loop, rather than two?
   return result;
 }
