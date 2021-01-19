@@ -24,8 +24,12 @@ function prepareVisData(withId, oppose) {
       if (o.rhs === w.idAnchor) o.rhs = w.name;
     })
     // If nodes not already seen, add their data to the nodes object
-    if (nodeSeen.indexOf(o.lhs) === -1) result.nodes.push({"name": o.lhs});
-    if (nodeSeen.indexOf(o.rhs) === -1) result.nodes.push({"name": o.rhs});
+    if (result.nodes.filter(n => n.name === o.lhs).length === 0) {
+      result.nodes.push({"name": o.lhs});
+    };
+    if (result.nodes.filter(n => n.name === o.rhs).length === 0) {
+      result.nodes.push({"name": o.rhs});
+    };
     // Push the opposing compounds to the links
     result.links.push({"source": o.lhs, "target": o.rhs});
   });
