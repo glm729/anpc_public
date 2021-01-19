@@ -8,13 +8,13 @@
  * {"idKegg": "cpd:C00001", "nameKegg": ["H2O", "Water"]}
  *
  * I won't force lowercase at this stage, I'll leave that for the other ops
- * (which have already been written, and do just that).  I also won't trim the
- * `cpd:` prefix, but that may be necessary.  With or without the prefix, it's
- * a unique identifier in KEGG.
+ * (which have already been written, and do just that).
+ *
+ * Modified to strip /^cpd:/.
  *
  * @param {String} raw String of raw text read from the file.
- * @return {Array} Array of Objects, each containing the KEGG Compound ID (with
- * prefix ^cpd:(?=C\d{5})) and the associated names.
+ * @return {Array} Array of Objects, each containing the KEGG Compound ID and
+ * the associated names.
  */
 function convKeggListCompound(raw) {
   // Split up the raw text
@@ -23,6 +23,6 @@ function convKeggListCompound(raw) {
   return data.map(d => {
     // For each entry, index 0 is the ID, and index 1 is the
     // semicolon-delimited name list, which needs to be split.
-    return {"idKegg": d[0], "nameKegg": d[1].split(/; /)};
+    return {"idKegg": d[0].replace(/^cpd:/, ''), "nameKegg": d[1].split(/; /)};
   });
 }

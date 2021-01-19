@@ -23,8 +23,8 @@ function prepareVisData(withId, oppose) {
     // Loop over the data with ID
     withId.map(w => {
       // Replace the ID with the name
-      if (o.lhs === w.idAnchor.replace(/^cpd:/, '')) o.lhs = w.name;
-      if (o.rhs === w.idAnchor.replace(/^cpd:/, '')) o.rhs = w.name;
+      if (o.lhs === w.idAnchor) o.lhs = w.name;
+      if (o.rhs === w.idAnchor) o.rhs = w.name;
     })
     // If nodes not already seen, add their data to the nodes object
     if (nodeSeen.indexOf(o.lhs) === -1) result.nodes.push({"name": o.lhs});

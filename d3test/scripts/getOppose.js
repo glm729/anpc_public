@@ -19,7 +19,6 @@ function getOppose(withId, kre) {
     })
     .flat()  // Flatten the array of arrays
     .filter(x => x !== null)  // Filter out the nulls (from idOther)
-    .map(x => x.replace(/^cpd:/, ''));  // Remove the prefix
   // Get the unique IDs present
   let idUniq = [...new Set(idAll)];
   // Map over the KEGG reaction equations data
