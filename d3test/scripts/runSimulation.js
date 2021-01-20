@@ -19,7 +19,7 @@ function runSimulation(data, idSvg = "svgGraph") {
   const width = svgElement.width.baseVal.value;
   const height = svgElement.height.baseVal.value;
   // Initialise the SVG
-  const svg = d3.select("svg")  // NOTE:  SELECT NOT CREATE
+  const svg = d3.select("#" + idSvg)  // NOTE:  SELECT NOT CREATE
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
   // Generate some data
   const nodes = data.nodes.map(d => Object.create(d));
@@ -54,22 +54,22 @@ function runSimulation(data, idSvg = "svgGraph") {
   /* Colour not yet defined/implemented! */
   // Create the links
   const link = svg.append("g")
-    .attr("stroke", "#999")
-    .attr("stroke-opacity", 0.6)
+      .attr("stroke", "#999")
+      .attr("stroke-opacity", 0.6)
     .selectAll("line")
     .data(links)
     .join("line")
-    .attr("stroke-width", 1);
+      .attr("stroke-width", 1);
   // Create the nodes
   const node = svg.append("g")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 1.5)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.5)
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-    .attr("r", 5)
-    .attr("fill", d => d.colour)
-    .call(drag(simulation));
+      .attr("r", 5)
+      .attr("fill", d => d.colour)
+      .call(drag(simulation));
   // Edit node titles
   node.append("title").text(d => d.name);
   // On each tick, run actions
