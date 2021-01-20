@@ -16,17 +16,10 @@ function subsetData(name, keggData) {
   // Map over the KEGG data
   return keggData.map(k => {
     // Check if any of the data match
-    let anyMatch = k.nameKegg.map(n => {
-      // m if n.toLowerCase() matches the regex specified
-      let m = n.toLowerCase().match(nRex);
-      // If no match, explicitly return null
-      if (m === null) return null;
-      // Otherwise, return the lowercase name that could be matched
-      return n.toLowerCase();
-    }).filter(x => x !== null);
+    let anyMatch = k.nameKegg.filter(n => nRex.test(n))
     // If no matches after filtering null entries, return null
-    if (anyMatch.length === 0) return null;
+    if (anyMatch.length === 0) return;
     // Return the KEGG Compound ID and the matching names
     return {"idKegg": k.idKegg, "matchName": anyMatch};
-  }).filter(x => x !== null);  // Filter out null entries
+  }).filter(x => x !== undefined);  // Filter out empty entries
 }

@@ -7,10 +7,10 @@
  * Thus, this can be converted into a JSON of the format:
  * {"idKegg": "cpd:C00001", "nameKegg": ["H2O", "Water"]}
  *
- * I won't force lowercase at this stage, I'll leave that for the other ops
- * (which have already been written, and do just that).
- *
- * Modified to strip /^cpd:/.
+ * - Modified to strip /^cpd:/.
+ * - Modified method to avoid empty final row.
+ * - Modified to force names to lowercase, for a considerable performance
+ *   improvement.
  *
  * @param {String} raw String of raw text read from the file.
  * @return {Array} Array of Objects, each containing the KEGG Compound ID and
@@ -18,11 +18,14 @@
  */
 function convKeggListCompound(raw) {
   // Split up the raw text
-  let data = raw.split(/\n/).filter(x => x !== '').map(r => r.split(/\t/));
+  let data = raw.replace(/\n$/, '').split(/\n/).map(r => r.split(/\t/));
   // Operate on the data
   return data.map(d => {
     // For each entry, index 0 is the ID, and index 1 is the
     // semicolon-delimited name list, which needs to be split.
-    return {"idKegg": d[0].replace(/^cpd:/, ''), "nameKegg": d[1].split(/; /)};
+    return {
+      "idKegg": d[0].replace(/^cpd:/, ''),
+      "nameKegg": d[1].split(/; /).map(n => n.toLowerCase())
+    };
   });
 }
