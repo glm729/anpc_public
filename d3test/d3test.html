@@ -15,7 +15,6 @@
     <script src="scripts/convKeggReactionEquation.js"></script>
     <script src="scripts/convRawTsvJson.js"></script>
     <script src="scripts/getOppose.js"></script>
-    <script src="scripts/nameInKegg.js"></script>
     <script src="scripts/openTab.js"></script>
     <script src="scripts/pickAnchor.js"></script>
     <script src="scripts/prepareVisData.js"></script>
@@ -28,6 +27,7 @@
     <script src="scripts/storeKRE.js"></script>
     <script src="scripts/storeRLI.js"></script>
     <script src="scripts/subsetData.js"></script>
+    <script src="scripts/getWithId.js"></script>
   </head>
   <body onload="document.getElementById('defaultOpen').click();">
     <!-- Define the tab buttons -->
@@ -80,7 +80,6 @@
       <div style="padding-bottom: 6px">
         <input
           type="file"
-          accept="text/plain"
           id="klcUpload"
           style="display: none"
           onchange="readFile(this, storeKLC);"

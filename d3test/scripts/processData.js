@@ -19,14 +19,9 @@ function processData() {
   let klc = window._klc;
   let kre = window._kre;
   let rli = window._rli;
-  console.log(`Scanning for names in KEGG List Compound.`);
-  console.time(`nameInKegg`);
-  nameInKegg(rli, klc);
-  console.timeEnd(`nameInKegg`);
-  console.log(`Scan complete.  Check rli for results.`);
-  let withId = window._rli.map(d => {
-    if (d.idAnchor !== null) return d;
-  }).filter(x => x !== undefined);
+  let withId = getWithId(rli, klc);
+  window._wid = withId;
+  console.log(`Stored withId as "_wid".`);
   let oppose = getOppose(withId, kre);
   window._opp = oppose;
   console.log(`Stored oppose as "_opp".`);

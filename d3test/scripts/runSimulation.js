@@ -31,7 +31,7 @@ function runSimulation(data, idSvg = "svgGraph") {
     .force("x", d3.forceX())
     .force("y", d3.forceY());
   // Define simulation drag actions
-  drag = simulation => {
+  const drag = simulation => {
     function dragStart(event, d) {
       if (!event.active) simulation.alphaTarget(0.4).restart();
       d.fx = d.x;
