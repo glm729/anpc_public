@@ -6,6 +6,12 @@
  * I was initially concerned that the simulation would only run one tick if put
  * in a function, btu it appears to persist well.
  *
+ * - Modified to incorporate pan and zoom:
+ *   - Added `const g = ...` to group nodes and links in the SVG
+ *   - Nodes and links now append to g, instead of svg
+ *   - Added `svg.call(d3.zoom()...` and function `zoomed`, but I don't
+ *     understand the syntax of the latter
+ *
  * @param {Object} data Input data for the simulation, containing the `nodes`
  * and `links` data.  This will likely be from `prepareVisData`.
  * @param {String} idSvg ID of th DOM node for the SVG.  This may be defeated
@@ -21,6 +27,8 @@ function runSimulation(data, idSvg = "svgGraph") {
   // Initialise the SVG
   const svg = d3.select("#" + idSvg)  // NOTE:  SELECT NOT CREATE
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
+  // Group the nodes and links
+  const g = svg.append("g").attr("cursor", "grab");
   // Generate some data
   const nodes = data.nodes.map(d => Object.create(d));
   const links = data.links.map(d => Object.create(d));
@@ -51,9 +59,8 @@ function runSimulation(data, idSvg = "svgGraph") {
       .on("drag", dragged)
       .on("end", dragEnd);
   };
-  /* Colour not yet defined/implemented! */
   // Create the links
-  const link = svg.append("g")
+  const link = g.append("g")  // Edited to append to g, rather than svg
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
     .selectAll("line")
@@ -61,7 +68,7 @@ function runSimulation(data, idSvg = "svgGraph") {
     .join("line")
       .attr("stroke-width", 1);
   // Create the nodes
-  const node = svg.append("g")
+  const node = g.append("g")  // Edited to append to g, rather than svg
       .attr("stroke", "#fff")
       .attr("stroke-width", 1.5)
     .selectAll("circle")
@@ -83,4 +90,14 @@ function runSimulation(data, idSvg = "svgGraph") {
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);
   });
+  // Zoom additions (other modifications above)
+  // From:  https://observablehq.com/@d3/drag-zoom
+  // My thanks and respect to Mike Bostock
+  svg.call(d3.zoom()
+    .extent([[0, 0], [width, height]])
+    .scaleExtent([1, 8])
+    .on("zoom", zoomed));
+  function zoomed({transform}) {  // Don't really know how this syntax works!
+    g.attr("transform", transform)
+  };
 }
