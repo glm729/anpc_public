@@ -26,7 +26,8 @@ function runSimulation(data, idSvg = "svgGraph") {
   const height = svgElement.height.baseVal.value;
   // Initialise the SVG
   const svg = d3.select("#" + idSvg)  // NOTE:  SELECT NOT CREATE
-    .attr("viewBox", [-width / 2, -height / 2, width, height]);
+    .attr("viewBox", [-width / 2, -height / 2, width, height])
+    .attr("cursor", "move");
   // Group the nodes and links
   const g = svg.append("g").attr("cursor", "grab");
   // Generate some data
@@ -63,6 +64,7 @@ function runSimulation(data, idSvg = "svgGraph") {
   const link = g.append("g")  // Edited to append to g, rather than svg
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
+      .attr("cursor", "move")
     .selectAll("line")
     .data(links)
     .join("line")
