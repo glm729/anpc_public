@@ -97,9 +97,56 @@ function runSimulation(data, idSvg = "svgGraph") {
   // My thanks and respect to Mike Bostock
   svg.call(d3.zoom()
     .extent([[0, 0], [width, height]])
-    .scaleExtent([1, 8])
+    .scaleExtent([1 / 2, 8])
     .on("zoom", zoomed));
   function zoomed({transform}) {  // Don't really know how this syntax works!
     g.attr("transform", transform)
   };
+  // Highlight additions
+  // Default opacity
+  let opacity = 0.33;
+  // Initialise indexLink
+  let indexLink = {};
+  // Assign true if the indices are linked
+  links.map(l => indexLink[l.source.index + "|" + l.target.index] = true);
+  // Function to check if two nodes are connected
+  function isConnected(a, b) {
+    let c1 = indexLink[a.index + "|" + b.index];
+    let c2 = indexLink[b.index + "|" + a.index];
+    return (c1 || c2);
+  };
+  // Mouseover function for nodes
+  function nodeMouseOver(d, i) {
+    link
+      .style("opacity", o => {
+        let c1 = (o.source.index === i.index);
+        let c2 = (o.target.index === i.index);
+        return (c1 || c2) ? 1 : opacity;
+      })
+      .style("stroke", o => {
+        let c1 = (o.source.index === i.index);
+        let c2 = (o.target.index === i.index);
+        return (c1 || c2) ? "blue" : "white";
+      });
+    node
+      .style("opacity", o => {
+        return (isConnected(i, o) || i === o) ? 1 : opacity;
+      })
+      .style("stroke", o => {
+        return (isConnected(i, o) || i === o) ? "blue" : "white";
+      });
+  };
+  // Mouseout function for nodes
+  function nodeMouseOut(d, i) {
+    link
+      .style("opacity", 1)
+      .style("stroke", "white");
+    node
+      .style("opacity", 1)
+      .style("stroke", "white");
+  };
+  // Apply mouseover and mouseout functions
+  node
+    .on("mouseover", (d, i) => nodeMouseOver(d, i))
+    .on("mouseout", (d, i) => nodeMouseOut(d, i));
 }
