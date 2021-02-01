@@ -120,6 +120,7 @@ addRow(["Prepared RLI", (Date.now() - t0) / 1000]);
 
 // Get the data with ID
 let withId = bg.getWithId(rli, klc);
+API.createData("withId", withId);
 addRow(["Found entries with ID", (Date.now() - t0) / 1000]);
 
 // Get reduced opposing compounds

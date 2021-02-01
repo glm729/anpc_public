@@ -304,11 +304,17 @@ let functions = {
     });
     svg.call(d3.zoom()
       .extent([[0, 0], [width, height]])
-      .scaleExtent([1, 8])
+      .scaleExtent([1 / 2, 8])
       .on("zoom", zoomed));
     function zoomed({transform}) {
       g.attr("transform", transform)
     };
+    node.on("click", d => {
+      let tmp = API.getData("withId").resurrect().filter(x => {
+        return x.name === d.target.textContent;
+      });
+      API.createData("nodeClicked", tmp)
+    });
   },
   subsetData: function(name, keggData) {
     let nPat = name.replace(/(ate|ic acid)$/, "(ate|ic acid)");
