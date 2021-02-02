@@ -291,7 +291,15 @@ let functions = {
         .attr("r", 5)
         .attr("fill", d => d.colour)
         .call(drag(simulation));
-    node.append("title").text(d => d.name);
+    const text = g.append("g")
+        .attr("visibility", "hidden")
+        .attr("pointer-events", "none")
+        .attr("font-size", "7px")
+        .attr("text-anchor", "start")
+      .selectAll("text")
+      .data(nodes)
+      .join("text")
+        .text(d => d.name);
     simulation.on("tick", () => {
       link
         .attr("x1", d => d.source.x)
@@ -301,6 +309,9 @@ let functions = {
       node
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
+      text.attr("transform", d => {
+        return "translate(" + (d.x + 6) + "," + (d.y + 2.5) + ")";
+      });
     });
     svg.call(d3.zoom()
       .extent([[0, 0], [width, height]])
@@ -309,6 +320,55 @@ let functions = {
     function zoomed({transform}) {
       g.attr("transform", transform)
     };
+    let opacity = 0.33;
+    let indexLink = {};
+    links.map(l => indexLink[l.source.index + "|" + l.target.index] = true);
+    function isConnected(a, b) {
+      let c1 = indexLink[a.index + "|" + b.index];
+      let c2 = indexLink[b.index + "|" + a.index];
+      return (c1 || c2);
+    };
+    function nodeMouseOver(d, i) {
+      link
+        .style("opacity", o => {
+          let c1 = (o.source.index === i.index);
+          let c2 = (o.target.index === i.index);
+          return (c1 || c2) ? 1 : opacity;
+        })
+        .style("stroke", o => {
+          let c1 = (o.source.index === i.index);
+          let c2 = (o.target.index === i.index);
+          return (c1 || c2) ? "blue" : "#999";
+        });
+      node
+        .style("opacity", o => {
+          return (isConnected(i, o) || i === o) ? 1 : opacity;
+        })
+        .style("stroke", o => {
+          return (isConnected(i, o) || i === o) ? "blue" : "#fff";
+        });
+      text
+        .style("visibility", o => {
+          return (isConnected(i, o) || i === o) ? "visible" : "hidden";
+        })
+        .style("font-weight", o => {
+          return (i === o) ? "bold" : "normal";
+        });
+    };
+    function nodeMouseOut(d, i) {
+      link
+        .style("opacity", 1)
+        .style("stroke", "#999");
+      node
+        .style("opacity", 1)
+        .style("stroke", "#fff");
+      text
+        .style("visibility", "hidden")
+        .style("font-weight", "normal");
+    };
+    node
+      .on("mouseover", (d, i) => nodeMouseOver(d, i))
+      .on("mouseout", (d, i) => nodeMouseOut(d, i));
     node.on("click", d => {
       let tmp = API.getData("withId").resurrect().filter(x => {
         return x.name === d.target.textContent;

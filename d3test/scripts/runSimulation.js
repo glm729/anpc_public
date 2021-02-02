@@ -11,6 +11,8 @@
  *   - Nodes and links now append to g, instead of svg
  *   - Added `svg.call(d3.zoom()...` and function `zoomed`, but I don't
  *     understand the syntax of the latter
+ * - Modified to incorporate highlighting nodes on mouseover
+ * - Modified to incorporate node labelling on mouseover
  *
  * @param {Object} data Input data for the simulation, containing the `nodes`
  * and `links` data.  This will likely be from `prepareVisData`.
@@ -61,7 +63,7 @@ function runSimulation(data, idSvg = "svgGraph") {
       .on("end", dragEnd);
   };
   // Create the links
-  const link = g.append("g")  // Edited to append to g, rather than svg
+  const link = g.append("g")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
       .attr("cursor", "move")
@@ -70,7 +72,7 @@ function runSimulation(data, idSvg = "svgGraph") {
     .join("line")
       .attr("stroke-width", 1);
   // Create the nodes
-  const node = g.append("g")  // Edited to append to g, rather than svg
+  const node = g.append("g")
       .attr("stroke", "#fff")
       .attr("stroke-width", 1.5)
     .selectAll("circle")
@@ -79,8 +81,16 @@ function runSimulation(data, idSvg = "svgGraph") {
       .attr("r", 5)
       .attr("fill", d => d.colour)
       .call(drag(simulation));
-  // Edit node titles
-  node.append("title").text(d => d.name);
+  // Create the text
+  const text = g.append("g")
+      .attr("visibility", "hidden")  // Start hidden
+      .attr("pointer-events", "none")  // Don't interact with the mouse
+      .attr("font-size", "7px")  // Small font
+      .attr("text-anchor", "start")  // Default, so not technically necessary
+    .selectAll("text")
+    .data(nodes)
+    .join("text")
+      .text(d => d.name);
   // On each tick, run actions
   simulation.on("tick", () => {
     link
@@ -91,6 +101,11 @@ function runSimulation(data, idSvg = "svgGraph") {
     node
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);
+    // Text needs transform rather than other attributes
+    text.attr("transform", d => {
+      // d.x and d.y are slightly offset
+      return "translate(" + (d.x + 6) + "," + (d.y + 2.5) + ")";
+    });
   });
   // Zoom additions (other modifications above)
   // From:  https://observablehq.com/@d3/drag-zoom
@@ -102,7 +117,7 @@ function runSimulation(data, idSvg = "svgGraph") {
   function zoomed({transform}) {  // Don't really know how this syntax works!
     g.attr("transform", transform)
   };
-  // Highlight additions
+  /* Highlight additions */
   // Default opacity
   let opacity = 0.33;
   // Initialise indexLink
@@ -117,6 +132,7 @@ function runSimulation(data, idSvg = "svgGraph") {
   };
   // Mouseover function for nodes
   function nodeMouseOver(d, i) {
+    // Apply link styles
     link
       .style("opacity", o => {
         let c1 = (o.source.index === i.index);
@@ -126,24 +142,39 @@ function runSimulation(data, idSvg = "svgGraph") {
       .style("stroke", o => {
         let c1 = (o.source.index === i.index);
         let c2 = (o.target.index === i.index);
-        return (c1 || c2) ? "blue" : "white";
+        return (c1 || c2) ? "blue" : "#999";
       });
+    // Apply node styles
     node
       .style("opacity", o => {
         return (isConnected(i, o) || i === o) ? 1 : opacity;
       })
       .style("stroke", o => {
-        return (isConnected(i, o) || i === o) ? "blue" : "white";
+        return (isConnected(i, o) || i === o) ? "blue" : "#fff";
+      });
+    // Apply text styles
+    text
+      .style("visibility", o => {
+        return (isConnected(i, o) || i === o) ? "visible" : "hidden";
+      })
+      .style("font-weight", o => {
+        return (i === o) ? "bold" : "normal";
       });
   };
   // Mouseout function for nodes
   function nodeMouseOut(d, i) {
+    // Reset link styles
     link
       .style("opacity", 1)
-      .style("stroke", "white");
+      .style("stroke", "#999");
+    // Reset node styles
     node
       .style("opacity", 1)
-      .style("stroke", "white");
+      .style("stroke", "#fff");
+    // Reset text styles
+    text
+      .style("visibility", "hidden")
+      .style("font-weight", "normal");
   };
   // Apply mouseover and mouseout functions
   node
