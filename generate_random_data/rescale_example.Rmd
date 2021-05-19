@@ -1,0 +1,226 @@
+---
+title: "Example: Rescaling data for visualisation"
+author: "Mr. George L. Malone"
+date: "2021-05-19"
+output:
+  pdf_document: default
+linkcolor: blue
+urlcolor: blue
+---
+
+```{r, include = FALSE}
+require(reticulate, quietly = TRUE)
+reticulate::use_python(Sys.which("python3")[[1]])
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Overview
+
+This report demonstrates rescaling an array of values for the purpose of
+generating visualisation parameters, specifically for the [D3 force-directed
+graph visualisation][1].  The data here require a valid JavaScript value for
+colours, and as the data are continuous within a finite range of values, it was
+thought that the hexadecimal colour range could be used, rather than somewhat
+more discrete values.
+
+```{python}
+# Import required modules
+from parse_tsv import *
+
+# Define file paths to use
+path = {
+    "in": "./_data/paper1_random1.tsv",
+    "out": "./_data/paper1_vis."
+}
+```
+
+
+## Data
+
+The data used are randomised values, the generation of which is documented in
+[the README for this directory][2].  This is for the purpose of simulating
+a comparison between differing test groups, such as pathogen-negative and
+pathogen-positive groups.
+
+```{python}
+# Read, parse, and sort the data
+data = sorted(parse_tsv(path["in"]), key = lambda e : e["name"])
+```
+
+
+## Scaling
+
+The data are scaled to a new range as they are probably derived from an
+asymmetric, continuous distribution, and for the purpose of retrieving
+approximate 256-bit colours from the data.
+
+The maximum absolute value of the data, given the current sample, is 73.63.  To
+derive a 256-bit hexadecimal colour, the data must first be scaled to
+a symmetric distribution with maximum absolute value of 255, and centred around
+0 (for convenience).  Mathematically, this can be represented as such:
+
+\[x = \left(\frac{c - a}{b - a}\right) \cdot \left(z - y\right) + y\]
+
+where:
+
+\begin{center}
+  \begin{tabular}{ll}
+    \(c\) & := current value\\
+    \(x\) & := new value\\
+    \(a\) & := lower limit of the current range\\
+    \(b\) & := upper limit of the current range\\
+    \(y\) & := lower limit of the new range\\
+    \(z\) & := upper limit of the new range\\
+  \end{tabular}
+\end{center}
+
+This effectively means that the current value, as a proportion of the current
+range, is multiplied by the new range to give the proportion of the new range,
+then the minimum value is added to recentre the new value.  A function that
+fulfils this purpose may be written as such:
+
+```{python}
+def scale_array(arr, new_scale):
+    # Initialise the old scale
+    old_scale = {"max": max([abs(a) for a in arr])}
+    old_scale["min"] = -old_scale["max"]
+    # Initialise output array
+    out = []
+    # Loop over the input array
+    for val in arr:
+        # Get the proportion of the old scale
+        prop = (val - old_scale["min"]) / (old_scale["max"] - old_scale["min"])
+        # Multiply it by the new scale
+        new_prop = prop * (new_scale["max"] - new_scale["min"])
+        # Append the offset value
+        out.append(new_prop + new_scale["min"])
+    # Return the output array
+    return out
+```
+
+So, when using this to scale the values for the current data, each entry's
+`diff` value must first be coerced from a string to a floating-point number,
+then scaled between \(-255\) and \(255\).  Given that the maximum absolute
+value of the original data is less than that of the new scale, the data will be
+stretched out over the new range.
+
+```{python}
+# Get floating-point values for diff
+diff = [float(d["diff"]) for d in data]
+
+# Define the new scale to use
+new_scale = {"min": -255, "max": 255}
+
+# Perform the rescale operation
+diff_rescale = scale_array(diff, new_scale = new_scale)
+
+# Compare the original and rescaled data
+print_data = "Original\tScaled"
+
+for i in range(0, 6):
+    orig = round(diff[i], 4)
+    resc = round(diff_rescale[i], 4)
+    print_data += f'\n{orig: .{4}}\t{resc: .{4}}'
+
+print(print_data)
+```
+
+
+## Hexadecimal
+
+The use of (256-bit) hexadecimal colouring is due to the format in which
+colours can be provided in CSS, hence JavaScript.  For a six-digit colour, of
+the format `#RRGGBB`, there are two hexadecimal ("hex") digits per main colour
+group, and \(16 \cdot 16 = 256\).  Thus, if red is negative and green is
+positive, the colours can be provided from 0 to 255 (a total of 256 discrete
+values) to indicate the extremity of response, relative to the extremity of the
+differences of other metabolites within the set.
+
+
+## Scaled values as colours
+
+Now that the scaled values are calculated, it is now necessary to coerce these
+values to hexadecimal values such that they can be interpreted as valid
+visualisation parameters.  This means that the values scaled earlier need to be
+converted to integers, then converted to hexadecimal.
+
+Converting the values to integer will be performed by rounding the numbers to
+the nearest integer.  Converting the values to hexadecimal is also fairly
+straightforward, but only part of the hex code can be used.  Here's an example:
+
+```{python}
+print(hex(255))
+```
+
+Only the latter two digits are required, as the `0x` denotes that the value is
+a hexadecimal number.  However, if the value is less than 16, there is only one
+latter digit:
+
+```{python}
+print(hex(3))
+```
+
+So, the most reliable method is to split by the `x`, take the second component
+of the resulting array, and to pad the string with zeroes to meet the minimum
+length of 2 characters:
+
+```{python}
+print(hex(3).split("x")[1].rjust(2, "0"))
+```
+
+Now, the input value for the visualisation is in the format `#RRGGBB`.  If red
+is negative and green is positive, the absolute value could be converted to
+hexadecimal, and placed in either the red or green "slot" depending on the sign
+of the original value.
+
+```{python}
+def get_vis_hex(val):
+    # Initialise string components
+    v = {"neg": "00", "pos": "00"}
+    # Pick which key to modify
+    k = "neg" if val < 0 else "pos"
+    # Modify the value
+    v[k] = hex(val).split("x")[1].rjust(2, "0")
+    # Return the formatted string
+    return f'#{v["neg"]}{v["pos"]}00'
+```
+
+So, putting all of that together:
+
+```{python}
+colours = [get_vis_hex(round(v)) for v in diff_rescale]
+
+# Check the result
+print_data = "Original\tScaled\tHexcode"
+
+for i in range(0, 6):
+    orig = round(diff[i], 4)
+    resc = round(diff_rescale[i], 4)
+    print_data += f'\n{orig: .{4}}\t{resc: .{4}}\t{colours[i]}'
+
+print(print_data)
+```
+
+Unfortunately, most are completely zero, because the scaled number is so small
+that it rounds to zero.  But the output format otherwise appears to be correct.
+This can now be output as a tab-delimited file for easier data entry, as the
+KEGG IDs for the current metabolites are currently missing.
+
+```{python, eval = FALSE}
+new_data = []
+
+for i in range(0, len(data)):
+    new_data.append({
+        "name": data[i]["name"],
+        "id": None,
+        "nodeColour": colours[i]
+    })
+
+with open(path["out"] + "tsv", "w") as file:
+    file.write(dict_to_tsv(new_data, key_spec = ["name", "id", "nodeColour"]))
+```
+
+
+[1]:https://github.com/glm729/d3visKegg
+[2]:./README.md
