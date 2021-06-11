@@ -1,0 +1,93 @@
+---
+title: "HMDB Data:  Level Summaries"
+author: "Mr. George L. Malone"
+date: "2021-06-11"
+output:
+  pdf_document: default
+urlcolor: blue
+linkcolor: blue
+---
+
+
+#  Overview
+
+This report aims to provide some numerical summaries of data stratification by
+taxonomy, as presented by the [Human Metabolome Database (HMDB)][1].  Firstly,
+each main taxonomical category is provided, with the number of different levels
+within each category.  Secondly, within the superclass category, the
+distribution of entries in each level is examined.
+
+
+# Data
+
+The data used for this investigation are the set of all XML-formatted data for
+each HMDB metabolite, as extracted from the overall HMDB metabolites XML.  The
+process by which the [HMDB _All Metabolites_ XML][2] was split is detailed
+[here][3].  There are a total of 114,222 files to consider.
+
+## Target data
+
+The information of interest is held by five different sections (keys) within
+the data.  The keys are `direct_parent`, `kingdom`, `super_class`, `class`, and
+`sub_class`.  A sixth key, `molecular_framework`, was previously considered but
+found to vary in depth and complexity between HMDB entries, thus no direct
+translation between metabolites could be made.
+
+
+# Results
+
+## Overall taxonomical groups
+
+The maximum number of entries featuring a direct parent, kingdom, and
+superclass entry was 114,133, suggesting that 89 entries lack complete
+taxonomical information.  Otherwise, 114,091 entries feature a class attribute,
+and 109,883 entries feature a subclass attribute.  A tabular summary is
+provided in Table \ref{table:keypresence}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{ll}
+    \texttt{direct\_parent} & 114,133\\
+    \texttt{kingdom} & 114,133\\
+    \texttt{super\_class} & 114,133\\
+    \texttt{class} & 114,091\\
+    \texttt{sub\_class} & 109,883\\
+  \end{tabular}
+  \caption{
+    \label{table:keypresence}
+    Number of entries featuring taxonomical key.
+  }
+\end{table}
+
+## Number of subgroups
+
+Within each major taxonomical group, the least number of unique subgroups was
+2, and the most number of unique subgroups was 1,526.  A tabular summary is
+provided in Table \ref{table:subgroups}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{ll}
+    \texttt{direct\_parent} & 1,526\\
+    \texttt{sub\_class} & 527\\
+    \texttt{class} & 327\\
+    \texttt{super\_class} & 25\\
+    \texttt{kingdom} & 2\\
+  \end{tabular}
+  \caption{
+    \label{table:subgroups}
+    Number of unique subgroup keys per major taxonomical group.
+  }
+\end{table}
+
+## Number within subgroups
+
+A full summary of the numbers within each subgroup is provided separately in
+YAML and TSV formats, as it is too large to present in this report.  Of
+particular interest, the superclass "Lipids and lipid-like molecules" contains
+90,688 of the 114,222 HMDB entries, that is, 62.9% of the entire database.
+
+
+[1]:https://hmdb.ca
+[2]:https://hmdb.ca/downloads
+[3]:https://github.com/glm729/splitHmdbXml
