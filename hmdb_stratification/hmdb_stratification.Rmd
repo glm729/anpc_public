@@ -2,6 +2,8 @@
 title: "HMDB Data:  Level Summaries"
 author: "Mr. George L. Malone"
 date: "2021-06-11"
+header-includes:
+  - \usepackage{float}
 output:
   pdf_document: default
 urlcolor: blue
@@ -15,7 +17,8 @@ This report aims to provide some numerical summaries of data stratification by
 taxonomy, as presented by the [Human Metabolome Database (HMDB)][1].  Firstly,
 each main taxonomical category is provided, with the number of different levels
 within each category.  Secondly, within the superclass category, the
-distribution of entries in each level is examined.
+distribution of entries in each level is examined.  Next, the classifications
+of data within the superclass "Lipids and lipid-like molecules" are summarised.
 
 
 # Data
@@ -33,10 +36,19 @@ the data.  The keys are `direct_parent`, `kingdom`, `super_class`, `class`, and
 found to vary in depth and complexity between HMDB entries, thus no direct
 translation between metabolites could be made.
 
+## Lipids data
+
+Additional information is sought regarding the stratification of taxonomical
+groups, given the superclass is "Lipids and lipid-like molecules".  This is
+mainly due to the volume of lipids data, and a requirement to further clarify
+lipid classifications.
+
 
 # Results
 
-## Overall taxonomical groups
+## All data
+
+### Overall taxonomical groups
 
 The maximum number of entries featuring a direct parent, kingdom, and
 superclass entry was 114,133, suggesting that 89 entries lack complete
@@ -44,7 +56,7 @@ taxonomical information.  Otherwise, 114,091 entries feature a class attribute,
 and 109,883 entries feature a subclass attribute.  A tabular summary is
 provided in Table \ref{table:keypresence}.
 
-\begin{table}
+\begin{table}[H]
   \centering
   \begin{tabular}{ll}
     \texttt{direct\_parent} & 114,133\\
@@ -59,13 +71,13 @@ provided in Table \ref{table:keypresence}.
   }
 \end{table}
 
-## Number of subgroups
+### Number of subgroups
 
 Within each major taxonomical group, the least number of unique subgroups was
 2, and the most number of unique subgroups was 1,526.  A tabular summary is
 provided in Table \ref{table:subgroups}.
 
-\begin{table}
+\begin{table}[H]
   \centering
   \begin{tabular}{ll}
     \texttt{direct\_parent} & 1,526\\
@@ -80,12 +92,80 @@ provided in Table \ref{table:subgroups}.
   }
 \end{table}
 
-## Number within subgroups
+### Number within subgroups
 
 A full summary of the numbers within each subgroup is provided separately in
 YAML and TSV formats, as it is too large to present in this report.  Of
 particular interest, the superclass "Lipids and lipid-like molecules" contains
 90,688 of the 114,222 HMDB entries, that is, 62.9% of the entire database.
+
+## Lipids data
+
+### Overall taxonomical groups
+
+Clearly, due to the nature of the selection of lipids entries, all entries are
+present in only the "Lipids and lipid-like molecules" superclass.  It is also
+true that all entries are present in the "Organic compounds" kingdom.  Thus,
+kingdom and superclass are common to all lipids entries.  There are a total of
+90,688 entries within this dataset, and most major groups are present for each
+entry, with the exception of subclass, whereby 46 entries are missing
+a subclass definition.  This is summarised in Table \ref{table:lipidgroups}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ll}
+    \texttt{direct\_parent} & 90,688\\
+    \texttt{kingdom} & 90,688\\
+    \texttt{super\_class} & 90,688\\
+    \texttt{class} & 90,688\\
+    \texttt{sub\_class} & 90,642\\
+  \end{tabular}
+  \caption{
+    \label{table:lipidgroups}
+    Summary of presence of major taxonomical group keys per lipids entry in
+    HMDB.
+  }
+\end{table}
+
+### Number of subgroups
+
+The numbers of subgroups per major taxonomical group is summarised in Table
+\ref{table:lipidsubgroups}.  There are significantly less unique subgroup keys
+within this dataset, but there are still a fairly large number.  Brevity leans
+towards using class as the secondary classification, but subclass may be more
+descriptive and, indeed, more useful considering the overall number of lipids
+data.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ll}
+    \texttt{direct\_parent} & 277\\
+    \texttt{sub\_class} & 64\\
+    \texttt{class} & 8\\
+    \texttt{kingdom} & 1\\
+    \texttt{super\_class} & 1\\
+  \end{tabular}
+  \caption{
+    \label{table:lipidsubgroups}
+    Number of unique subgroup keys per major taxonomical group, lipids data
+    only.  Note that the \texttt{kingdom} and \texttt{super\_class} categories
+    contain exactly one subcategory.
+  }
+\end{table}
+
+### Number within subgroups
+
+A full summary of numbers within each subgroup is provided separately, in both
+YAML and TSV formats, as the summary is too large to present in this report. Of
+particular interest within direct parents, cardiolipins and triacylgrlycerols
+make up 32,219 and 38,713 entries, respectively, to a total of 70,932 -- this
+covers 78.2% of all lipids entries.  Of interest within classes,
+glycerophospholipids and glycerolipids count for 40,158 and 42,798 entries
+respectively, totalling 82,956 entries, which is 91.5% of all lipids entries.
+Of interest for subclasses, glycerophosphoglycerophosphoglycerols (that's
+a mouthful) and triradylcglycerols (_sic_) contribute 32,236 and 39,867 entries
+respectively, totalling 72,103 entries.  This constitutes 79.5% of all lipids
+entries.
 
 
 [1]:https://hmdb.ca
